@@ -18,7 +18,7 @@ app.views.list = Backbone.View.extend({
 				self.render();
 			},
 			error: function (collection, response) {
-				console.log(response);
+				console.dir(response);
 			}
 		});
 	},

@@ -29,7 +29,7 @@ app.collections.eventListings = Backbone.Collection.extend({
 			});
 			return events;
 		} else {
-			console.log(response);
+			console.dir(response);
 			return [];
 		}
 	}
