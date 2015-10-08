@@ -1,5 +1,6 @@
 app.views.eventListView = Backbone.View.extend({
-	
+	markers: [],
+
 	initialize: function(options) {
 		var self = this;
 
@@ -8,8 +9,6 @@ app.views.eventListView = Backbone.View.extend({
 		// get an initial set of data
 		this.model.fetch({
 			success: function (collection, response) {
-				console.dir(collection);
-				console.dir(response);
 				self.render();
 			},
 			error: function (collection, response) {
@@ -18,8 +17,6 @@ app.views.eventListView = Backbone.View.extend({
 		});
 
 		self.initMap();
-
-		google.maps.event.addListener(this.map, "dragend", this.dragMap);
 	},
 
 	initMap: function() {
@@ -33,20 +30,41 @@ app.views.eventListView = Backbone.View.extend({
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         this.map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+		google.maps.event.addListener(self.map, 'dragend', function() {
+			self.clearMarkers();
+	        self.dragMap(this.center, map, self);
+	    });
     },
 
-	addEvent : function(eventItem){
+	addEventMarker : function(eventItem){
         var markerView = new app.views.eventMarkerView({ model: eventItem, map: this.map });
+        this.markers.push(markerView);
     },
 
 	render: function() {
-		this.model.each(this.addEvent, this);
+		this.model.each(this.addEventMarker, this);
 	},
 
-	dragMap: function() {
-		var center = this.center;
-		console.dir(center.lat());
-		console.dir(center.lng());
-		// need to re-fetch list and re-render markers
+	dragMap: function(latLng, map, t) {
+		console.dir(latLng);
+
+		// set new latlong
+		this.model.configure({ latitude: latLng.lat(), longitude: latLng.lng() });
+		
+		// refetch
+		this.model.fetch({
+			success: function (collection, response) {
+				t.render();
+			},
+			error: function (collection, response) {
+				console.dir(response);
+			}
+		});
+	},
+
+	// this is ugly. Has to be a better way to get to the marker...
+	clearMarkers: function() {
+		this.markers.forEach(function(marker) { marker.marker.setMap(null); });
 	}
 });

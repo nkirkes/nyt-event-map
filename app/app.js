@@ -15,10 +15,6 @@ var app = (function() {
             self.eventList = new api.collections.eventList();
             Backbone.history.start();
             return self;
-        },
-        changeContent: function(el) {
-            this.content.empty().append(el);
-            return this;
         }
     };
 
