@@ -1,6 +1,8 @@
-app.collections.eventListings = Backbone.Collection.extend({
+app.collections.eventList = Backbone.Collection.extend({
 	
-	model: app.models.eventListing,
+	model: app.models.eventItem,
+
+	// initial values set to NYC
     latitude: "40.7127",
 	longitude: "-74.0059",
 
@@ -22,9 +24,12 @@ app.collections.eventListings = Backbone.Collection.extend({
 			var events = new Array();
 			var self = this;
 			_.each(response.results, function(element, index, list) {
-				events.push(new app.models.eventListing( {
+				events.push(new app.models.eventItem( {
 					"id": element.event_id,
-					"name": element.event_name
+					"name": element.event_name,
+					"description": element.web_description,
+					"latitude": element.geocode_latitude,
+					"longitude": element.geocode_longitude 
 				}));
 			});
 			return events;

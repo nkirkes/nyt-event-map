@@ -7,13 +7,14 @@ var app = (function() {
         collections: {},
         content: null,
         router: null,
-        eventListings: null,
+        eventList: null,
+        map: null,
         init: function() {
-            this.content = $("#content");
-            this.eventListings = new api.collections.eventListings();
-            //this.eventListings.fetch();
+            var self = this;
+            self.content = $("#content");
+            self.eventList = new api.collections.eventList();
             Backbone.history.start();
-            return this;
+            return self;
         },
         changeContent: function(el) {
             this.content.empty().append(el);
@@ -23,18 +24,18 @@ var app = (function() {
 
     // init views
     var ViewFactory = {
-        list: function() {
-            if(!this.listView) {
-                this.listView = new api.views.list({
-                    model: api.eventListings
+        listView: function() {
+            if(!this.eventListView) {
+                this.eventListView = new api.views.eventListView({
+                    model: api.eventList
                 });
             }
-            return this.listView;
+            return this.eventListView;
         },
-        map: function() {
-            if(!this.mapView) {
-                this.mapView = new api.views.map({
-                    //model: api.eventListings // this should be it's own map/marker model to hold data req'd by Google to render
+        markerView: function() {
+            if (!this.markerView) {
+                this.markerView = new api.views.eventMarkerView({
+                    model: api.eventItem
                 });
             }
         }
@@ -43,21 +44,16 @@ var app = (function() {
     // init routing
     var Router = Backbone.Router.extend({
         routes: {
-            "event/:index": "show",
-            "": "list"
+            "": "listView"
         },
-        list: function() {
-            var view = ViewFactory.list();
-            api.changeContent(view.$el);
+        listView: function() {
+            var view = ViewFactory.listView({ map: this.map });
             view.render();
         },
-        map: function() {
-            // this will need to take the place of the list view, or find a new element to update.
-            //var view = ViewFactory.map();
-            //api.changeContent(view.$el);
-            //view.render();
-        },
-        show: function() {}
+        markerView: function() {
+            var view = ViewFactory.markerView({ map: this.map });
+            view.render();
+        }
     });
 
     api.router = new Router();

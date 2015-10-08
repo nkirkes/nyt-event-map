@@ -2,52 +2,36 @@
 <html>
   <head>
         <title>NY Times Events</title>
-        <link rel="stylesheet" type="text/css" href="css/styles.css" />
+        <link rel="stylesheet" type="text/css" href="public/css/styles.css" />
     </head>
     <body>
-        <div class="container">
-            <div id="menu" class="menu"></div>
-            <h1>NY Times Event Map</h1>
-            <div id="content"></div>
-        </div>
 
         <div id="map"></div>
     
 
-        <script type="text/template" id="event-tpl">
+        <!--script type="text/template" id="event-tpl">
 		    <li data-index="<%= index %>">
 		        <h2>
 		            <%= name %>
 		        </h2>
 		    </li>
-		</script>
+		</script-->
 
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.2.3/backbone-min.js"></script>
         <script src="app/app.js"></script>
-        <script src="app/views/list.js"></script>
-        <script src="app/models/eventListing.js"></script>
-        <script src="app/collections/eventListings.js"></script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCGBtm6wflxAawpfGL4SvZPya0lL8JYpvs&callback=initMap">
+        <script src="app/views/eventListView.js"></script>
+        <script src="app/views/eventMarkerView.js"></script>
+        <script src="app/models/eventItem.js"></script>
+        <script src="app/collections/eventList.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCGBtm6wflxAawpfGL4SvZPya0lL8JYpvs">
 	    </script>
         <script>
             window.onload = function() {
                 app.init();
             }
-
-            // this has to move to it's own view
-            // needs to accept lat/long
-            // needs pan event, markers, info window
-			var map;
-			function initMap() {
-			  map = new google.maps.Map(document.getElementById('map'), {
-			    center: {lat: 40.7127, lng: -74.0059},
-			    zoom: 8
-			  });
-			}
-
         </script>
     </body>
 </html>
