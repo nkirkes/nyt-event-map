@@ -1,15 +1,14 @@
 app.views.eventMarkerView = Backbone.View.extend({
 	initialize: function(options) {
-		console.dir('eventMarkerView init()');
 		var self = this;
 
 		self.map = options.map;
 		self.marker = new google.maps.Marker({
 	        map: self.map,
-	        position: new google.maps.LatLng(this.model.latitude, this.model.longitude),
-	        title: self.model.name,
-	        descr : self.model.get('description'), // TODO: change this to event desc
-	        id : self.model.get('id')
+	        position: new google.maps.LatLng(self.model.attributes.latitude, self.model.attributes.longitude),
+	        title: self.model.attributes.name,
+	        descr : self.model.attributes.description,
+	        id : self.model.attributes.id
 	    });
 
 		// hook the infoWindow desciption
@@ -20,8 +19,15 @@ app.views.eventMarkerView = Backbone.View.extend({
 		// wire the marker events
 		google.maps.event.addListener(self.marker, 'mouseover', self.showEventInfo);
       	google.maps.event.addListener(self.marker, 'mouseout', self.hideEventInfo);
-      	google.maps.event.addListener(self.marker, 'click', self.showEventDetail);
 	},
 
-	render: function() { }
+	render: function() { },
+
+    hideEventInfo : function() {
+      this.infowindow.close();
+    },
+
+    showEventInfo : function() {
+      this.infowindow.open(this.map, this);
+    },
 });

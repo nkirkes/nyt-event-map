@@ -31,13 +31,6 @@ var app = (function() {
                 });
             }
             return this.eventListView;
-        },
-        markerView: function() {
-            if (!this.markerView) {
-                this.markerView = new api.views.eventMarkerView({
-                    model: api.eventItem
-                });
-            }
         }
     };
     
@@ -48,10 +41,6 @@ var app = (function() {
         },
         listView: function() {
             var view = ViewFactory.listView({ map: this.map });
-            view.render();
-        },
-        markerView: function() {
-            var view = ViewFactory.markerView({ map: this.map });
             view.render();
         }
     });
