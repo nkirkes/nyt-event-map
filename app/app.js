@@ -30,6 +30,13 @@ var app = (function() {
                 });
             }
             return this.listView;
+        },
+        map: function() {
+            if(!this.mapView) {
+                this.mapView = new api.views.map({
+                    //model: api.eventListings // this should be it's own map/marker model to hold data req'd by Google to render
+                });
+            }
         }
     };
     
@@ -43,6 +50,12 @@ var app = (function() {
             var view = ViewFactory.list();
             api.changeContent(view.$el);
             view.render();
+        },
+        map: function() {
+            // this will need to take the place of the list view, or find a new element to update.
+            //var view = ViewFactory.map();
+            //api.changeContent(view.$el);
+            //view.render();
         },
         show: function() {}
     });
