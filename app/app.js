@@ -10,11 +10,9 @@ var app = (function() {
         eventList: null,
         map: null,
         init: function() {
-            var self = this;
-            self.content = $("#content");
-            self.eventList = new api.collections.eventList();
+            this.content = $("#content");
+            this.eventList = new api.collections.eventList();
             Backbone.history.start();
-            return self;
         }
     };
 

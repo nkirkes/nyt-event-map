@@ -2,11 +2,10 @@ app.views.eventListView = Backbone.View.extend({
 	markers: [],
 
 	initialize: function(options) {
-		var self = this;
-
-		self.map = options.map;
+		this.map = options.map;
 
 		// get an initial set of data
+		var self = this;
 		this.model.fetch({
 			success: function (collection, response) {
 				self.render();
@@ -16,14 +15,14 @@ app.views.eventListView = Backbone.View.extend({
 			}
 		});
 
-		self.initMap();
+		this.initMap();
 	},
 
 	initMap: function() {
 		var self = this;
 
         // start in NYC
-        var center = new google.maps.LatLng(self.model.latitude, self.model.longitude);
+        var center = new google.maps.LatLng(this.model.latitude, this.model.longitude);
         var mapOptions = {
             center: center,
             zoom: 14,
@@ -31,7 +30,7 @@ app.views.eventListView = Backbone.View.extend({
         };
         this.map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
-		google.maps.event.addListener(self.map, 'dragend', function() {
+		google.maps.event.addListener(this.map, 'dragend', function() {
 			self.clearMarkers();
 	        self.dragMap(this.center, map, self);
 	    });

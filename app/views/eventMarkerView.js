@@ -11,23 +11,34 @@ app.views.eventMarkerView = Backbone.View.extend({
 	        id : self.model.attributes.id
 	    });
 
+		var infoContent = '<div id="content">'+
+			'<h1>' + self.marker.title + '</h1>'+
+			'<div>'+ self.marker.descr + '</div>'+
+			'</div>';
+
 		// hook the infoWindow desciption
-		self.marker.infowindow = new google.maps.InfoWindow({
-	    	content: self.marker.descr
+		self.marker.infoWindow = new google.maps.InfoWindow({
+	    	content: infoContent
 	    });
 
 		// wire the marker events
 		google.maps.event.addListener(self.marker, 'mouseover', self.showEventInfo);
       	google.maps.event.addListener(self.marker, 'mouseout', self.hideEventInfo);
+      	google.maps.event.addListener(self.marker, 'click', self.showEventDetails);
 	},
 
 	render: function() { },
 
-    hideEventInfo : function() {
-      this.infowindow.close();
+    hideEventInfo: function() {
+      this.infoWindow.close();
     },
 
-    showEventInfo : function() {
-      this.infowindow.open(this.map, this);
+    showEventInfo: function() {
+      this.infoWindow.open(this.map, this);
     },
+
+    showEventDetails: function() {
+    	console.dir(this.infoWindow)
+    	// TODO: let's show some additional detail in another view/pane
+    }
 });
