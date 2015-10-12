@@ -5,7 +5,10 @@ app.models.eventItem = Backbone.Model.extend({
 			name: 'Unknown',
 			description: '',
 			latitude: null,
-			longitude: null
+			longitude: null,
+			startDate: null,
+			category: null,
+			subcategory: null
 		};
 	}
 });

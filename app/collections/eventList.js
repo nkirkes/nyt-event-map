@@ -1,6 +1,7 @@
 app.collections.eventList = Backbone.Collection.extend({
 	
 	model: app.models.eventItem,
+	filters: [],
 
 	// initial values set to NYC
     latitude: "40.7127",
@@ -10,8 +11,29 @@ app.collections.eventList = Backbone.Collection.extend({
     	
     },
 
+    setFilters: function(criteria){
+    	this.filters = criteria;
+    },
+
     url: function() {
-    	return 'http://api.nytimes.com/svc/events/v2/listings.json?ll=' + this.latitude + ',' + this.longitude + '&api-key=1b6ec24de1512db2fae47f5165ce39ea%3A6%3A69563513';
+    	// construct endpoint
+    	var endpoint = 'http://api.nytimes.com/svc/events/v2/listings.json?api-key=1b6ec24de1512db2fae47f5165ce39ea%3A6%3A69563513'
+       	+ '&ll=' + this.latitude + ',' + this.longitude;
+
+       	if (this.filters.length > 0) {
+		    endpoint += '&filters=category:(';
+		    
+		    for(var i = 0; i < this.filters.length; i++)
+		    {
+		    	endpoint += this.filters[i];
+		    	if (i < this.filters.length - 1) {
+		    		endpoint += '+';
+		    	}
+		    };
+		    endpoint += ')';
+		}
+
+		return endpoint;
     },
 
     configure: function(options) {
@@ -29,7 +51,10 @@ app.collections.eventList = Backbone.Collection.extend({
 					"name": element.event_name,
 					"description": element.web_description,
 					"latitude": element.geocode_latitude,
-					"longitude": element.geocode_longitude 
+					"longitude": element.geocode_longitude,
+					"startDate": element.recurring_start_date,
+					category: element.category,
+					subcategory: element.subcategory
 				}));
 			});
 			return events;

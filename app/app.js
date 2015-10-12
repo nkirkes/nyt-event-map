@@ -13,6 +13,9 @@ var app = (function() {
             this.content = $("#content");
             this.eventList = new api.collections.eventList();
             Backbone.history.start();
+        },
+        filterResults: function() {
+            console.dir(this);
         }
     };
 

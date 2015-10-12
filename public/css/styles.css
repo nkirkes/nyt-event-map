@@ -1,4 +1,4 @@
-html, body { height: 100%; margin: 0; padding: 0; }
+html, body { height: 100%; margin: 0; padding: 0; font-family: arial; }
 
 #map {
 	position: absolute;
@@ -8,14 +8,16 @@ html, body { height: 100%; margin: 0; padding: 0; }
 	height :100%;
 }
 
-/* #main header {
+#filters {
 	position: absolute;
-	color: #333333;
-	margin: 5px;
-	padding: 10px 10px 5px 10px;
-	width: 96%;
-	left: 10px;
+	top: 100px;
+	right: 100px;
+	width: 200px;
+	height: 500px;
+	padding: 0 30px;
+	background-color: #fff;
 }
 
-
-*/
+#filters h1 {
+	
+}

@@ -1,44 +1,46 @@
 app.views.eventMarkerView = Backbone.View.extend({
 	initialize: function(options) {
-		var self = this;
-
-		self.map = options.map;
-		self.marker = new google.maps.Marker({
-	        map: self.map,
-	        position: new google.maps.LatLng(self.model.attributes.latitude, self.model.attributes.longitude),
-	        title: self.model.attributes.name,
-	        descr : self.model.attributes.description,
-	        id : self.model.attributes.id
+		this.map = options.map;
+		this.marker = new google.maps.Marker({
+	        map: this.map,
+	        position: new google.maps.LatLng(this.model.attributes.latitude, this.model.attributes.longitude),
+	        title: this.model.attributes.name,
+	        descr : this.model.attributes.description,
+	        id : this.model.attributes.id,
+	        startDate: this.formatDate(this.model.attributes.startDate),
+	        category: this.model.attributes.category,
+	        subcategory: this.model.attributes.subcategory
 	    });
-
-		var infoContent = '<div id="content">'+
-			'<h1>' + self.marker.title + '</h1>'+
-			'<div>'+ self.marker.descr + '</div>'+
-			'</div>';
 
 		// hook the infoWindow desciption
-		self.marker.infoWindow = new google.maps.InfoWindow({
-	    	content: infoContent
-	    });
+		this.marker.infoWindow = options.infoWindow;
 
 		// wire the marker events
-		google.maps.event.addListener(self.marker, 'mouseover', self.showEventInfo);
-      	google.maps.event.addListener(self.marker, 'mouseout', self.hideEventInfo);
-      	google.maps.event.addListener(self.marker, 'click', self.showEventDetails);
+      	google.maps.event.addListener(this.marker, 'click', this.showEventDetails);
 	},
 
 	render: function() { },
 
-    hideEventInfo: function() {
-      this.infoWindow.close();
-    },
-
-    showEventInfo: function() {
-      this.infoWindow.open(this.map, this);
-    },
-
     showEventDetails: function() {
-    	console.dir(this.infoWindow)
-    	// TODO: let's show some additional detail in another view/pane
+    	var infoContent = '<div id="content">' +
+			'<h1>' + this.title + '</h1>' +
+			'<div>' + this.descr + '</div>' +
+			'<div>Start Date: ' + this.startDate + '</div>' +
+			'<div>Category: ' + this.category + '</div>';
+		
+		if (this.subcategory !== null) {
+			infoContent += '<div>Subcategory: ' + this.subcategory + '</div>';
+		}
+			
+		infoContent += '</div>';
+
+		this.infoWindow.setContent(infoContent);
+
+		this.infoWindow.open(this.map, this);
+    },
+
+    formatDate: function(dateString) {
+    	var formattedDate = new Date(dateString);
+    	return formattedDate.toDateString();
     }
 });
