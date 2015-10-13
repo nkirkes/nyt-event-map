@@ -2,7 +2,7 @@ app.collections.eventList = Backbone.Collection.extend({
 	
 	model: app.models.eventItem,
 	filters: [],
-
+	mapRadius: 2000, // default to 2km
 	// initial values set to NYC
     latitude: "40.7127",
 	longitude: "-74.0059",
@@ -15,10 +15,15 @@ app.collections.eventList = Backbone.Collection.extend({
     	this.filters = criteria;
     },
 
+    setRadius: function(radius) {
+    	if (radius > 0) {
+    		mapRadius = radius;
+    	}
+    },
     url: function() {
     	// construct endpoint
     	var endpoint = 'http://api.nytimes.com/svc/events/v2/listings.json?api-key=1b6ec24de1512db2fae47f5165ce39ea%3A6%3A69563513'
-       	+ '&ll=' + this.latitude + ',' + this.longitude + '&radius=5000';
+       	+ '&ll=' + this.latitude + ',' + this.longitude + '&radius=' + mapRadius;
 
        	if (this.filters.length > 0) {
 		    endpoint += '&filters=category:(';
